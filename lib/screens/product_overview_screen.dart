@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products_provider.dart';
+import 'package:shop/screens/cart_screen.dart';
 import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/product_item.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,9 @@ class ProductOverViewState extends State<ProductOverView> {
               child: ch,
               value: cartData.itemCount.toString()
           ),
-          child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){},),
+          child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){
+            Navigator.of(context).pushNamed(CartScreen.routeName);
+          },),
           ),
         ],
       ),
