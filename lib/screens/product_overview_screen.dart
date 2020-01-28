@@ -15,10 +15,10 @@ class ProductOverView extends StatelessWidget {
       body: GridView.builder(
           padding:const EdgeInsets.all(10),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 3/2 , crossAxisSpacing: 10,mainAxisSpacing: 10),
-          itemBuilder: (context,i)=>ProductItem(
-              products[i].id,
-              products[i].title,
-              products[i].imageUrl),
+          itemBuilder: (context,i)=>ChangeNotifierProvider(
+            builder: (context) =>products[i],
+            child: ProductItem(),
+          ),
           itemCount: products.length,
       ),
     );
