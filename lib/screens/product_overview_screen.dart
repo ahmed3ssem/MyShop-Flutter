@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop/models/product.dart';
+import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products_provider.dart';
+import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/product_item.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +47,13 @@ class ProductOverViewState extends State<ProductOverView> {
               PopupMenuItem(child: Text("Favourites"), value: filterOption.Favourites,),
               PopupMenuItem(child: Text("Show All"), value: filterOption.All,),
             ],
-          )
+          ),
+          Consumer <Cart> (builder: (_,cartData,ch)=> Badge(
+              child: ch,
+              value: cartData.itemCount.toString()
+          ),
+          child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){},),
+          ),
         ],
       ),
       body: GridView.builder(
