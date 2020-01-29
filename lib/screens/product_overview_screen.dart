@@ -3,6 +3,7 @@ import 'package:shop/models/product.dart';
 import 'package:shop/providers/cart.dart';
 import 'package:shop/providers/products_provider.dart';
 import 'package:shop/screens/cart_screen.dart';
+import 'package:shop/widgets/app_drawer.dart';
 import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/product_item.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +60,7 @@ class ProductOverViewState extends State<ProductOverView> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: GridView.builder(
           padding:const EdgeInsets.all(10),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 3/2 , crossAxisSpacing: 10,mainAxisSpacing: 10),
