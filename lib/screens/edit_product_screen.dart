@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shop/models/product.dart';
 import 'package:shop/providers/products_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/EditProductScreen';
@@ -37,10 +39,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (!isValid) {
       return;
     }
-    print(_editedProduct.price);
-    print(_editedProduct.title);
-    print(_editedProduct.description);
-    print(_editedProduct.imageUrl);
+    Provider.of<ProductProvider>(context , listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -113,9 +113,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return "Please provide a value";
-                      } else {
-                        return null;
                       }
+                      if(double.tryParse(value) == null)
+                        {
+                          return "Please enter a valid number";
+                        }
+                      if(double.tryParse(value)<=0)
+                        {
+                          return "Please enter a valid number";
+                        }
+                        return null;
                     },
                   ),
                   TextFormField(
@@ -177,9 +184,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           validator: (value) {
                             if (value.isEmpty) {
                               return "Please provide a value";
-                            } else {
-                              return null;
                             }
+                            if(!value.startsWith('http')&& !value.startsWith('https'))
+                              {
+                                return "Please enter valid value";
+                              }
+                            else
+                              return null;
+
                           },
                         ),
                       ),
