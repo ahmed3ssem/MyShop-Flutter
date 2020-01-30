@@ -72,6 +72,8 @@ class ProductProvider with ChangeNotifier{
       );
       _items.add(newProduct);
       notifyListeners();
+    }).catchError((error){
+      throw error;
     });
   }
 
