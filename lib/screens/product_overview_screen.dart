@@ -7,6 +7,7 @@ import 'package:shop/widgets/app_drawer.dart';
 import 'package:shop/widgets/badge.dart';
 import 'package:shop/widgets/product_item.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 enum filterOption{
 Favourites,
@@ -19,6 +20,18 @@ class ProductOverView extends StatefulWidget{
 }
 class ProductOverViewState extends State<ProductOverView> {
   var _showOnlyFavourites = false;
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if(_isInit)
+      {
+        Provider.of<ProductProvider>(context).getProducts();
+      }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
 
   @override
   Widget build(BuildContext context) {

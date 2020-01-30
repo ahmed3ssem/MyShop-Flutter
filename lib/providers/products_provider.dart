@@ -98,4 +98,16 @@ class ProductProvider with ChangeNotifier{
     _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
+  
+  Future<void> getProducts() async{
+    const url = 'https://fluttercourse-820cf.firebaseio.com/products.json';
+    try{
+      final response = await http.get(url);
+      print(json.decode(response.body));
+    }
+    catch(error)
+    {
+
+    }
+  }
 }
