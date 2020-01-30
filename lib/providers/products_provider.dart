@@ -52,30 +52,32 @@ class ProductProvider with ChangeNotifier{
     return _items.firstWhere((prod)=> prod.id == id);
   }
 
-  Future<void> addProduct(Product product)
+  Future<void> addProduct(Product product) async
   {
     const url = 'https://fluttercourse-820cf.firebaseio.com/products.json';
-    return http.post(url,body: json.encode({
-      'title' : product.title,
-      'price' : product.price,
-      'imageUrl' : product.imageUrl,
-      'description' : product.description,
-      'isFavourite' : product.isFavourite,
-    })).then((response){
+    try {
+      final response = await http.post(url, body: json.encode({
+        'title': product.title,
+        'price': product.price,
+        'imageUrl': product.imageUrl,
+        'description': product.description,
+        'isFavourite': product.isFavourite,
+      }));
       print(json.decode(response.body));
       final newProduct = Product(
-          title: product.title,
-          imageUrl: product.imageUrl,
-          description: product.description,
-          price: product.price,
-          id: json.decode(response.body)['name'],
+        title: product.title,
+        imageUrl: product.imageUrl,
+        description: product.description,
+        price: product.price,
+        id: json.decode(response.body)['name'],
       );
       _items.add(newProduct);
       notifyListeners();
-    }).catchError((error){
+    } catch(error)
+    {
       throw error;
-    });
-  }
+    }
+    }
 
   void updateProduct(String id , Product newProduct)
   {
