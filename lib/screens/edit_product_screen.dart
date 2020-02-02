@@ -93,8 +93,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      await Provider.of<Products>(context, listen: false)
+      Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     } else {
       try {
         await Provider.of<Products>(context, listen: false)
@@ -115,16 +119,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ],
               ),
         );
-      }/* finally {
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      }*/
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      }
     }
     // Navigator.of(context).pop();
   }
@@ -274,6 +274,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               if (!value.startsWith('http') &&
                                   !value.startsWith('https')) {
                                 return 'Please enter a valid URL.';
+                              }
+                              if (!value.endsWith('.png') &&
+                                  !value.endsWith('.jpg') &&
+                                  !value.endsWith('.jpeg')) {
+                                return 'Please enter a valid image URL.';
                               }
                               return null;
                             },

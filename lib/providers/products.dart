@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop/model/http_exception.dart';
 
 import './product.dart';
 
@@ -41,7 +40,6 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
-
   // var _showFavoritesOnly = false;
 
   List<Product> get items {
@@ -70,10 +68,9 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://fluttercourse-820cf.firebaseio.com/products.json';
+    const url = 'https://flutter-update.firebaseio.com/products.json';
     try {
       final response = await http.get(url);
-      print(json.decode(response.body));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
@@ -94,7 +91,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://fluttercourse-820cf.firebaseio.com/products.json';
+    const url = 'https://flutter-update.firebaseio.com/products.json';
     try {
       final response = await http.post(
         url,
@@ -122,18 +119,9 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
+  void updateProduct(String id, Product newProduct) {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
-      final url =
-          'https://fluttercourse-820cf.firebaseio.com/products/$id.json';
-      await http.patch(url,
-          body: json.encode({
-            'title': newProduct.title,
-            'imageUrl': newProduct.imageUrl,
-            'description': newProduct.description,
-            'price': newProduct.price
-          }));
       _items[prodIndex] = newProduct;
       notifyListeners();
     } else {
@@ -141,18 +129,8 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> deleteProduct(String id) async {
-    final url = 'https://fluttercourse-820cf.firebaseio.com/products/$id.json';
-    final esitingProductIndex = _items.indexWhere((prod) => prod.id == id);
-    var exsitingProduct = _items[esitingProductIndex];
-    final response = await http.delete(url);
-    if (response.statusCode >= 400) {
-      _items.insert(esitingProductIndex, exsitingProduct);
-      notifyListeners();
-      throw HttpException("Couldnot delete this product");
-    }
-    exsitingProduct = null;
-    _items.removeAt(esitingProductIndex);
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
 }
